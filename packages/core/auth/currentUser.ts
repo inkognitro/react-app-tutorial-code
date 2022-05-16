@@ -1,10 +1,16 @@
-import { AuthUser } from './types';
+import {AnonymousAuthUser, AuthUser} from './types';
 import { createContext, useContext } from 'react';
 
-const currentUserContext = createContext<AuthUser>({ type: 'anonymous' });
+const currentUserContext = createContext<null | AuthUser>(null);
 
 export const CurrentUserProvider = currentUserContext.Provider;
 
+export const anonymousAuthUser: AnonymousAuthUser = { type: 'anonymous' };
+
 export function useCurrentUser(): AuthUser {
-    return useContext(currentUserContext);
+    const currentUser = useContext(currentUserContext);
+    if (!currentUser) {
+        throw new Error(`no AuthUser was provided`);
+    }
+    return currentUser;
 }

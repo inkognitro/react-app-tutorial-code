@@ -1,3 +1,3 @@
 export * from './types';
 export * from './currentUser';
-export * from './currentUserWriter';
+export * from './currentUserRepository';
