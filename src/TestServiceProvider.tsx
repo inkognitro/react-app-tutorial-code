@@ -9,10 +9,7 @@ import React, { FC, PropsWithChildren, useRef } from "react";
 
 class StubCurrentUserRepository implements CurrentUserRepository {
   setCurrentUser(currentUser: AuthUser) {}
-
-  getCurrentUser(): AuthUser {
-    return anonymousAuthUser;
-  }
+  init() {}
 }
 
 export const TestServiceProvider: FC<PropsWithChildren<{}>> = (props) => {

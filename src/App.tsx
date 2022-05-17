@@ -1,10 +1,14 @@
-import React from "react";
-import { useCurrentUserRepository } from "./packages/core/auth";
+import React, { useEffect } from "react";
+import {
+  anonymousAuthUser,
+  useCurrentUserRepository,
+  useCurrentUserWriter,
+} from "./packages/core/auth";
 
-function App() {
-  const currentUserRepo = useCurrentUserRepository();
+function CurrentUserPlayground() {
+  const currentUserWriter = useCurrentUserWriter();
   function loginUser() {
-    currentUserRepo.setCurrentUser({
+    currentUserWriter.setCurrentUser({
       type: "authenticated",
       apiKey: "foo",
       data: {
@@ -14,14 +18,7 @@ function App() {
     });
   }
   function logoutUser() {
-    currentUserRepo.setCurrentUser({
-      type: "authenticated",
-      apiKey: "foo",
-      data: {
-        id: "foo",
-        username: "Linus",
-      },
-    });
+    currentUserWriter.setCurrentUser(anonymousAuthUser);
   }
   return (
     <div className="App">
@@ -42,6 +39,14 @@ function App() {
       </div>
     </div>
   );
+}
+
+function App() {
+  const currentUserRepo = useCurrentUserRepository();
+  useEffect(() => {
+    currentUserRepo.init();
+  }, []);
+  return <CurrentUserPlayground />;
 }
 
 export default App;

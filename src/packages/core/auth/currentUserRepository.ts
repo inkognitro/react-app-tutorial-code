@@ -2,9 +2,12 @@ import { createContext, useContext } from "react";
 import { AuthUser } from "./authUser";
 import { anonymousAuthUser } from "./currentUser";
 
-export type CurrentUserRepository = {
-  getCurrentUser(): AuthUser;
+export type CurrentUserWriter = {
   setCurrentUser(currentUser: AuthUser): void;
+};
+
+export type CurrentUserRepository = CurrentUserWriter & {
+  init: () => void;
 };
 
 type CurrentUserStateSetter = (currentUser: AuthUser) => void;
@@ -17,16 +20,22 @@ export class BrowserCurrentUserRepository implements CurrentUserRepository {
   }
 
   setCurrentUser(currentUser: AuthUser) {
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
     this.setCurrentUserState(currentUser);
+    if (currentUser.type === "anonymous") {
+      localStorage.removeItem("currentUser");
+      return;
+    }
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
   }
 
-  getCurrentUser(): AuthUser {
-    const storedCurrentUserStr = localStorage.getItem("currentUser");
-    if (!storedCurrentUserStr) {
-      return anonymousAuthUser;
+  init() {
+    const currentUserStr = localStorage.getItem("currentUser");
+    if (!currentUserStr) {
+      this.setCurrentUser(anonymousAuthUser);
+      return;
     }
-    return JSON.parse(storedCurrentUserStr) as AuthUser;
+    const currentUser = JSON.parse(currentUserStr) as AuthUser;
+    this.setCurrentUser(currentUser);
   }
 }
 
@@ -41,4 +50,12 @@ export function useCurrentUserRepository(): CurrentUserRepository {
     throw new Error(`no CurrentUserRepository was provided`);
   }
   return repo;
+}
+
+export function useCurrentUserWriter(): CurrentUserWriter {
+  const writer = useContext(currentUserRepositoryContext);
+  if (!writer) {
+    throw new Error(`no CurrentUserWriter was provided`);
+  }
+  return writer;
 }
