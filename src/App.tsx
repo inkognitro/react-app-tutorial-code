@@ -1,23 +1,35 @@
 import React from 'react';
 import logo from './logo.svg';
+import { useCurrentUserRepository } from "./packages/core/auth";
 
 function App() {
+  const currentUserRepo = useCurrentUserRepository();
+  function loginUser() {
+      currentUserRepo.setCurrentUser({
+        type: 'authenticated',
+        apiKey: 'foo',
+        data: {
+          id: 'foo',
+          username: 'Linus',
+        },
+      });
+  }
+  function logoutUser() {
+      currentUserRepo.setCurrentUser({
+        type: 'authenticated',
+        apiKey: 'foo',
+        data: {
+          id: 'foo',
+          username: 'Linus',
+        },
+      });
+  }
   return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+          <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '600px', textAlign: 'center' }}>
+            <a href="#" onClick={loginUser}>login</a>
+            <a href="#" onClick={logoutUser}>logout</a>
+          </div>
       </div>
   );
 }

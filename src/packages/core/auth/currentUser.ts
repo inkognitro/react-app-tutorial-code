@@ -1,4 +1,4 @@
-import {AnonymousAuthUser, AuthUser} from './types';
+import {AnonymousAuthUser, AuthUser} from './authUser';
 import { createContext, useContext } from 'react';
 
 const currentUserContext = createContext<null | AuthUser>(null);
