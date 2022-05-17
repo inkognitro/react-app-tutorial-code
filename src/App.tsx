@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { MouseEvent, useEffect } from "react";
 import {
   anonymousAuthUser,
+  useCurrentUser,
   useCurrentUserRepository,
   useCurrentUserWriter,
 } from "./packages/core/auth";
 
 function CurrentUserPlayground() {
   const currentUserWriter = useCurrentUserWriter();
+  const currentUser = useCurrentUser();
+  const isLoggedIn = currentUser.type === "authenticated";
   function loginUser() {
     currentUserWriter.setCurrentUser({
       type: "authenticated",
@@ -17,7 +20,8 @@ function CurrentUserPlayground() {
       },
     });
   }
-  function logoutUser() {
+  function logoutUser(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
     currentUserWriter.setCurrentUser(anonymousAuthUser);
   }
   return (
@@ -30,12 +34,20 @@ function CurrentUserPlayground() {
           textAlign: "center",
         }}
       >
-        <a href="#" onClick={loginUser}>
-          login
-        </a>
-        <a href="#" onClick={logoutUser}>
-          logout
-        </a>
+        {!isLoggedIn && (
+          <a href="#" onClick={loginUser}>
+            login
+          </a>
+        )}
+        {isLoggedIn && (
+          <a href="#" onClick={logoutUser}>
+            logout
+          </a>
+        )}
+        ::{" "}
+        {currentUser.type === "authenticated"
+          ? currentUser.data.username
+          : "Anonymous"}
       </div>
     </div>
   );
