@@ -3,15 +3,14 @@ import {
   anonymousAuthUser,
   useCurrentUser,
   useCurrentUserRepository,
-  useCurrentUserWriter,
 } from "./packages/core/auth";
 
 function CurrentUserPlayground() {
-  const currentUserWriter = useCurrentUserWriter();
+  const currentUserRepo = useCurrentUserRepository();
   const currentUser = useCurrentUser();
   const isLoggedIn = currentUser.type === "authenticated";
   function loginUser() {
-    currentUserWriter.setCurrentUser({
+    currentUserRepo.setCurrentUser({
       type: "authenticated",
       apiKey: "foo",
       data: {
@@ -22,7 +21,7 @@ function CurrentUserPlayground() {
   }
   function logoutUser(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
-    currentUserWriter.setCurrentUser(anonymousAuthUser);
+    currentUserRepo.setCurrentUser(anonymousAuthUser);
   }
   return (
     <div className="App">

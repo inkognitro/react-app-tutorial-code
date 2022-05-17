@@ -2,11 +2,8 @@ import { createContext, useContext } from "react";
 import { AuthUser } from "./authUser";
 import { anonymousAuthUser } from "./currentUser";
 
-export type CurrentUserWriter = {
+export type CurrentUserRepository = {
   setCurrentUser(currentUser: AuthUser): void;
-};
-
-export type CurrentUserRepository = CurrentUserWriter & {
   init: () => void;
 };
 
@@ -50,12 +47,4 @@ export function useCurrentUserRepository(): CurrentUserRepository {
     throw new Error(`no CurrentUserRepository was provided`);
   }
   return repo;
-}
-
-export function useCurrentUserWriter(): CurrentUserWriter {
-  const writer = useContext(currentUserRepositoryContext);
-  if (!writer) {
-    throw new Error(`no CurrentUserWriter was provided`);
-  }
-  return writer;
 }
