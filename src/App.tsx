@@ -9,7 +9,8 @@ function CurrentUserPlayground() {
   const currentUserRepo = useCurrentUserRepository();
   const currentUser = useCurrentUser();
   const isLoggedIn = currentUser.type === "authenticated";
-  function loginUser() {
+  function loginUser(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
     currentUserRepo.setCurrentUser({
       type: "authenticated",
       apiKey: "foo",
