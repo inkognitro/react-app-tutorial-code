@@ -4,7 +4,7 @@ import {
   CurrentUserProvider,
   CurrentUserRepository,
   CurrentUserRepositoryProvider,
-} from "./packages/core/auth";
+} from "@packages/core/auth";
 import React, { FC, PropsWithChildren, useRef } from "react";
 
 class StubCurrentUserRepository implements CurrentUserRepository {

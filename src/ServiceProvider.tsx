@@ -5,7 +5,7 @@ import {
   BrowserCurrentUserRepository,
   CurrentUserProvider,
   CurrentUserRepositoryProvider,
-} from "./packages/core/auth";
+} from "@packages/core/auth";
 
 export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
   const [currentUserState, setCurrentUserState] =

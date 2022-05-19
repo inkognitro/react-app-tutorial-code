@@ -3,7 +3,7 @@ import {
   anonymousAuthUser,
   useCurrentUser,
   useCurrentUserRepository,
-} from "./packages/core/auth";
+} from "@packages/core/auth";
 
 function CurrentUserPlayground() {
   const currentUserRepo = useCurrentUserRepository();

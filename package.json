@@ -24,6 +24,11 @@
     "lint": "eslint ./src --ext .ts,.tsx",
     "lint:fix": "tsc && eslint ./src --ext .ts,.tsx --quiet --fix"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "@packages/(.*)": "<rootDir>/src/packages/$1"
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
