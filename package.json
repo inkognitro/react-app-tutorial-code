@@ -47,6 +47,7 @@
     "react-dev-utils": "^12.0.1",
     "react-dom": "^18.1.0",
     "react-refresh": "^0.11.0",
+    "react-router-dom": "^6.3.0",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
     "sass-loader": "^12.3.0",
@@ -102,7 +103,9 @@
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
       "^src/(.*)$": "<rootDir>/src/$1",
-      "@packages/(.*)": "<rootDir>/src/packages/$1"
+      "@packages/(.*)": "<rootDir>/src/packages/$1",
+      "@components/(.*)": "<rootDir>/src/components/$1",
+      "@pages/(.*)": "<rootDir>/src/pages/$1"
     },
     "moduleFileExtensions": [
       "web.js",
