@@ -7,6 +7,7 @@ import {
     CurrentUserRepositoryProvider,
 } from '@packages/core/auth';
 import { Config, ConfigProvider } from '@packages/core/config';
+import { BrowserRouter } from 'react-router-dom';
 
 export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const [currentUserState, setCurrentUserState] = useState<AuthUser>(anonymousAuthUser);
@@ -15,10 +16,12 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
         companyName: 'ACME',
     });
     return (
-        <ConfigProvider value={configRef.current}>
-            <CurrentUserRepositoryProvider value={browserCurrentUserRepositoryRef.current}>
-                <CurrentUserProvider value={currentUserState}>{props.children}</CurrentUserProvider>
-            </CurrentUserRepositoryProvider>
-        </ConfigProvider>
+        <BrowserRouter>
+            <ConfigProvider value={configRef.current}>
+                <CurrentUserRepositoryProvider value={browserCurrentUserRepositoryRef.current}>
+                    <CurrentUserProvider value={currentUserState}>{props.children}</CurrentUserProvider>
+                </CurrentUserRepositoryProvider>
+            </ConfigProvider>
+        </BrowserRouter>
     );
 };
