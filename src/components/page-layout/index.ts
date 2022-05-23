@@ -1,2 +1,2 @@
-export * from "./BlankPage";
-export * from "./NavBarPage";
+export * from './BlankPage';
+export * from './NavBarPage';

@@ -1,7 +1,7 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 export type Config = {
-  companyName: string;
+    companyName: string;
 };
 
 const configContext = createContext<Config | null>(null);
@@ -9,9 +9,9 @@ const configContext = createContext<Config | null>(null);
 export const ConfigProvider = configContext.Provider;
 
 export function useConfig(): Config {
-  const config = useContext(configContext);
-  if (!config) {
-    throw new Error(`no config was provided`);
-  }
-  return config;
+    const config = useContext(configContext);
+    if (!config) {
+        throw new Error(`no config was provided`);
+    }
+    return config;
 }
