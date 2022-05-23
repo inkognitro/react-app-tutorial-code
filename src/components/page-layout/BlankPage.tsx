@@ -16,7 +16,9 @@ export const BlankPage: FC<BlankPageProps> = (props) => {
         titleParts.push(companyName);
     }
     useEffect(() => {
-        document.title = titleParts.join(' :: ');
+        if (document) {
+            document.title = titleParts.join(' :: ');
+        }
     });
     return <>{props.children}</>;
 };
