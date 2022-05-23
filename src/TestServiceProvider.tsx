@@ -6,6 +6,7 @@ import {
   CurrentUserRepositoryProvider,
 } from "@packages/core/auth";
 import React, { FC, PropsWithChildren, useRef } from "react";
+import { Config, ConfigProvider } from "@packages/core/config";
 
 class StubCurrentUserRepository implements CurrentUserRepository {
   setCurrentUser(currentUser: AuthUser) {}
@@ -14,11 +15,18 @@ class StubCurrentUserRepository implements CurrentUserRepository {
 
 export const TestServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
   const stubCurrentUserRepositoryRef = useRef(new StubCurrentUserRepository());
+  const configRef = useRef<Config>({
+    companyName: "ACME",
+  });
   return (
-    <CurrentUserRepositoryProvider value={stubCurrentUserRepositoryRef.current}>
-      <CurrentUserProvider value={anonymousAuthUser}>
-        {props.children}
-      </CurrentUserProvider>
-    </CurrentUserRepositoryProvider>
+    <ConfigProvider value={configRef.current}>
+      <CurrentUserRepositoryProvider
+        value={stubCurrentUserRepositoryRef.current}
+      >
+        <CurrentUserProvider value={anonymousAuthUser}>
+          {props.children}
+        </CurrentUserProvider>
+      </CurrentUserRepositoryProvider>
+    </ConfigProvider>
   );
 };

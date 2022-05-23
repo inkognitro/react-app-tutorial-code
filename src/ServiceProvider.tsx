@@ -6,6 +6,7 @@ import {
   CurrentUserProvider,
   CurrentUserRepositoryProvider,
 } from "@packages/core/auth";
+import { Config, ConfigProvider } from "@packages/core/config";
 
 export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
   const [currentUserState, setCurrentUserState] =
@@ -13,13 +14,18 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
   const browserCurrentUserRepositoryRef = useRef(
     new BrowserCurrentUserRepository(setCurrentUserState)
   );
+  const configRef = useRef<Config>({
+    companyName: "ACME",
+  });
   return (
-    <CurrentUserRepositoryProvider
-      value={browserCurrentUserRepositoryRef.current}
-    >
-      <CurrentUserProvider value={currentUserState}>
-        {props.children}
-      </CurrentUserProvider>
-    </CurrentUserRepositoryProvider>
+    <ConfigProvider value={configRef.current}>
+      <CurrentUserRepositoryProvider
+        value={browserCurrentUserRepositoryRef.current}
+      >
+        <CurrentUserProvider value={currentUserState}>
+          {props.children}
+        </CurrentUserProvider>
+      </CurrentUserRepositoryProvider>
+    </ConfigProvider>
   );
 };
