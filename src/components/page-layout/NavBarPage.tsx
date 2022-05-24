@@ -1,10 +1,65 @@
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, useState } from 'react';
 import { BlankPage, BlankPageProps } from './BlankPage';
 import { anonymousAuthUser, useCurrentUser, useCurrentUserRepository } from '@packages/core/auth';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, IconButton, Toolbar, Typography, Link as MuiLink, Grid, Container } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Button, Toolbar, Typography, Container, Menu, MenuItem } from '@mui/material';
 import { useConfig } from '@packages/core/config';
 import { Home } from '@mui/icons-material';
+import { FunctionalLink, RoutingLink } from '@components/routing';
+
+const LoggedInUserMenu: FC = () => {
+    const navigate = useNavigate();
+    const currentUserRepo = useCurrentUserRepository();
+    const currentUser = useCurrentUser();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    if (currentUser.type !== 'authenticated') {
+        return null;
+    }
+    function logoutUser() {
+        currentUserRepo.setCurrentUser(anonymousAuthUser);
+        navigate('/');
+    }
+    function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+        setAnchorEl(event.currentTarget);
+    }
+    function closeMenu() {
+        setAnchorEl(null);
+    }
+    const isMenuOpen = !!anchorEl;
+    return (
+        <>
+            <Button
+                id="basic-button"
+                aria-controls={isMenuOpen ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={isMenuOpen ? 'true' : undefined}
+                onClick={handleClick}>
+                {currentUser.data.username}
+            </Button>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={isMenuOpen}
+                onClose={closeMenu}
+                MenuListProps={{ 'aria-labelledby': 'basic-button' }}>
+                <MenuItem
+                    onClick={() => {
+                        navigate('/user-management/my-settings');
+                        closeMenu();
+                    }}>
+                    My settings
+                </MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        logoutUser();
+                        closeMenu();
+                    }}>
+                    Logout
+                </MenuItem>
+            </Menu>
+        </>
+    );
+};
 
 const Nav: FC = () => {
     const { companyName } = useConfig();
@@ -12,8 +67,7 @@ const Nav: FC = () => {
     const currentUserRepo = useCurrentUserRepository();
     const currentUser = useCurrentUser();
     const isLoggedIn = currentUser.type === 'authenticated';
-    function loginUser(event: MouseEvent<HTMLAnchorElement>) {
-        event.preventDefault();
+    function loginUser() {
         currentUserRepo.setCurrentUser({
             type: 'authenticated',
             apiKey: 'foo',
@@ -23,82 +77,28 @@ const Nav: FC = () => {
             },
         });
     }
-    function logoutUser(event: MouseEvent<HTMLAnchorElement>) {
-        event.preventDefault();
-        currentUserRepo.setCurrentUser(anonymousAuthUser);
-        navigate('/');
-    }
     return (
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '15px' }}>
-            <MuiLink>
+            <RoutingLink to="/">
                 <Home />
-            </MuiLink>
+            </RoutingLink>
             <Typography component="h2" variant="h5" color="inherit" align="center" noWrap sx={{ flex: 1 }}>
                 {companyName}
             </Typography>
-            {isLoggedIn && (
+            {!isLoggedIn && (
                 <>
-                    <MuiLink onClick={loginUser} noWrap variant="button" href="/" sx={{ p: 1, flexShrink: 0 }}>
+                    <FunctionalLink onClick={loginUser} noWrap variant="button" href="/" sx={{ p: 1, flexShrink: 0 }}>
                         Login
-                    </MuiLink>{' '}
-                    <Button variant="outlined" size="small">
+                    </FunctionalLink>{' '}
+                    <Button variant="outlined" size="small" onClick={() => navigate('/auth/register')}>
                         Sign up
                     </Button>
                 </>
             )}
+            {isLoggedIn && <LoggedInUserMenu />}
         </Toolbar>
     );
 };
-
-function NavOld() {
-    const navigate = useNavigate();
-    const currentUserRepo = useCurrentUserRepository();
-    const currentUser = useCurrentUser();
-    const isLoggedIn = currentUser.type === 'authenticated';
-    const currentUserDisplayName = currentUser.type === 'authenticated' ? currentUser.data.username : 'Anonymous';
-    function loginUser(event: MouseEvent<HTMLAnchorElement>) {
-        event.preventDefault();
-        currentUserRepo.setCurrentUser({
-            type: 'authenticated',
-            apiKey: 'foo',
-            data: {
-                id: 'foo',
-                username: 'Linus',
-            },
-        });
-    }
-    function logoutUser(event: MouseEvent<HTMLAnchorElement>) {
-        event.preventDefault();
-        currentUserRepo.setCurrentUser(anonymousAuthUser);
-        navigate('/');
-    }
-    return (
-        <div
-            style={{
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                width: '600px',
-                textAlign: 'center',
-            }}>
-            <Link to="/">Home</Link> &ndash;{' '}
-            {!isLoggedIn && (
-                <>
-                    <Link to="/auth/register">Register</Link> &ndash;{' '}
-                    <a href="#" onClick={loginUser}>
-                        Login
-                    </a>
-                </>
-            )}
-            {isLoggedIn && (
-                <a href="#" onClick={logoutUser}>
-                    Logout
-                </a>
-            )}{' '}
-            :: {isLoggedIn && <Link to="/user-management/my-settings">{currentUserDisplayName}</Link>}
-            {!isLoggedIn && currentUserDisplayName}
-        </div>
-    );
-}
 
 export type NavBarPageProps = BlankPageProps;
 
