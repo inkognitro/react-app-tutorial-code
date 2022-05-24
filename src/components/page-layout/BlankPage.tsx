@@ -1,5 +1,13 @@
 import React, { FC, ReactNode, useEffect } from 'react';
 import { useConfig } from '@packages/core/config';
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 export type BlankPageProps = {
     title: string;
@@ -20,5 +28,10 @@ export const BlankPage: FC<BlankPageProps> = (props) => {
             document.title = titleParts.join(' :: ');
         }
     });
-    return <>{props.children}</>;
+    return (
+        <>
+            <GlobalStyle />
+            {props.children}
+        </>
+    );
 };
