@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Toolbar, Typography, Container, Menu, MenuItem } from '@mui/material';
 import { useConfig } from '@packages/core/config';
 import { Home } from '@mui/icons-material';
-import { FunctionalLink, RoutingLink } from '@components/routing';
+import { FunctionalLink, RoutingLink } from '@packages/core/routing';
 
 const LoggedInUserMenu: FC = () => {
     const navigate = useNavigate();
