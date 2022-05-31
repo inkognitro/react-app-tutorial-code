@@ -1,4 +1,4 @@
-import { TranslationPlaceholders, Translator } from '@packages/core/i18n/translator';
+import { TranslationPlaceholders, Translator } from './translator';
 
 export type Dictionary = {
     [key: string]: string | Dictionary;
