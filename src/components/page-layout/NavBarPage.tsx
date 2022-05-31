@@ -6,7 +6,8 @@ import { Button, Toolbar, Typography, Container, Menu, MenuItem } from '@mui/mat
 import { useConfig } from '@packages/core/config';
 import { Home } from '@mui/icons-material';
 import { FunctionalLink, RoutingLink } from '@packages/core/routing';
-import { useTranslator } from '@packages/core/i18n';
+import { useI18n, useI18nManager, useTranslator } from '@packages/core/i18n';
+import styled from 'styled-components';
 
 const LoggedInUserMenu: FC = () => {
     const navigate = useNavigate();
@@ -103,13 +104,47 @@ const Nav: FC = () => {
     );
 };
 
+const StyledFooter = styled.footer`
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 40px;
+    border-top: 1px solid grey;
+    padding-top: 15px;
+`;
+
+const FooterLink = styled(FunctionalLink)`
+    color: grey;
+    text-decoration: none;
+    margin-left: 10px;
+    &:first-child {
+        margin-left: 0;
+    }
+`;
+
+const Footer: FC = () => {
+    const { setLanguage } = useI18nManager();
+    return (
+        <StyledFooter>
+            <FooterLink style={{ color: 'grey' }} onClick={() => setLanguage('de-CH')}>
+                de-CH
+            </FooterLink>
+            <FooterLink style={{ color: 'grey' }} onClick={() => setLanguage('en-US')}>
+                en-US
+            </FooterLink>
+        </StyledFooter>
+    );
+};
+
 export type NavBarPageProps = BlankPageProps;
 
 export const NavBarPage: FC<NavBarPageProps> = (props) => {
     return (
         <BlankPage title={props.title}>
             <Nav />
-            <Container>{props.children}</Container>
+            <Container>
+                {props.children}
+                <Footer />
+            </Container>
         </BlankPage>
     );
 };

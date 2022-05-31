@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react';
-import { I18n, LanguageCode } from './i18n';
-import { Dictionary, DictionaryTranslator } from '@packages/core/i18n/dictionaryTranslator';
+import { LanguageCode } from './i18n';
 
 export type I18nManager = {
     setLanguage: (languageCode: LanguageCode) => void;
+    init: () => void;
 };
 
 const i18nManagerContext = createContext<null | I18nManager>(null);
@@ -16,21 +16,4 @@ export function useI18nManager(): I18nManager {
         throw new Error('No I18nManager was provided');
     }
     return repo;
-}
-
-type i18nStateSetter = (i18nState: I18n) => void;
-
-export class BrowserDictionaryI18nManager implements I18nManager {
-    private readonly setI18nState: i18nStateSetter;
-    private readonly translator: DictionaryTranslator;
-    private dictionaryByLanguageCodeMapping: { [key: LanguageCode]: Dictionary };
-
-    constructor(setI18nState: i18nStateSetter, translator: DictionaryTranslator) {
-        this.setI18nState = setI18nState;
-        this.translator = translator;
-    }
-
-    setLanguage(languageCode: LanguageCode) {}
-
-    init() {}
 }
