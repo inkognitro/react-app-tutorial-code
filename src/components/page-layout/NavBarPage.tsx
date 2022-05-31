@@ -6,7 +6,7 @@ import { Button, Toolbar, Typography, Container, Menu, MenuItem } from '@mui/mat
 import { useConfig } from '@packages/core/config';
 import { Home } from '@mui/icons-material';
 import { FunctionalLink, RoutingLink } from '@packages/core/routing';
-import { useI18n, useI18nManager, useTranslator } from '@packages/core/i18n';
+import { LanguageCode, useI18n, useI18nManager, useTranslator } from '@packages/core/i18n';
 import styled from 'styled-components';
 
 const LoggedInUserMenu: FC = () => {
@@ -106,31 +106,41 @@ const Nav: FC = () => {
 
 const StyledFooter = styled.footer`
     display: flex;
-    justify-content: flex-start;
-    margin-top: 40px;
-    border-top: 1px solid grey;
-    padding-top: 15px;
+    justify-content: space-around;
+    margin-top: 60px;
 `;
 
 const FooterLink = styled(FunctionalLink)`
-    color: grey;
+    color: #ddd;
     text-decoration: none;
-    margin-left: 10px;
-    &:first-child {
-        margin-left: 0;
+    margin: 0 5px;
+    font-family: inherit;
+    font-size: 12px;
+    &.active {
+        color: #bbb;
     }
 `;
 
 const Footer: FC = () => {
+    const { t } = useTranslator();
     const { setLanguage } = useI18nManager();
+    const { languageCode } = useI18n();
+    function getLinkClassName(langCode: LanguageCode): undefined | string {
+        if (languageCode === langCode) {
+            return 'active';
+        }
+        return undefined;
+    }
     return (
         <StyledFooter>
-            <FooterLink style={{ color: 'grey' }} onClick={() => setLanguage('de-CH')}>
-                de-CH
-            </FooterLink>
-            <FooterLink style={{ color: 'grey' }} onClick={() => setLanguage('en-US')}>
-                en-US
-            </FooterLink>
+            <div>
+                <FooterLink onClick={() => setLanguage('de-CH')} className={getLinkClassName('de-CH')}>
+                    {t('core.languages.deCH')}
+                </FooterLink>
+                <FooterLink onClick={() => setLanguage('en-US')} className={getLinkClassName('en-US')}>
+                    {t('core.languages.enUS')}
+                </FooterLink>
+            </div>
         </StyledFooter>
     );
 };

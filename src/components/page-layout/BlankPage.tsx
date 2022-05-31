@@ -1,12 +1,6 @@
 import React, { FC, ReactNode, useEffect } from 'react';
 import { useConfig } from '@packages/core/config';
-import { createGlobalStyle } from 'styled-components';
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-  }
-`;
+import { CssBaseline } from '@mui/material';
 
 export type BlankPageProps = {
     title: string;
@@ -29,7 +23,7 @@ export const BlankPage: FC<BlankPageProps> = (props) => {
     });
     return (
         <>
-            <GlobalStyle />
+            <CssBaseline />
             {props.children}
         </>
     );

@@ -8,6 +8,10 @@
           "login": "Anmelden",
           "signUp": "Registrieren",
           "mySettings": "Einstellungen"
+      },
+      "languages": {
+          "enUS": "English (US)",
+          "deCH": "Deutsch (CH)"
       }
   },
   "pages": {
