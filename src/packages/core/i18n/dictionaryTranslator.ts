@@ -1,6 +1,6 @@
 import { TranslationPlaceholders, Translator } from '@packages/core/i18n/translator';
 
-type Dictionary = {
+export type Dictionary = {
     [key: string]: string | Dictionary;
 };
 
