@@ -13,14 +13,31 @@ import {
     DictionaryTranslator,
     I18n,
     I18nProvider,
+    LanguageCode,
+    I18nManager,
     Translator,
     TranslatorProvider,
 } from '@packages/core/i18n';
 import enUS from '@components/translations/enUS.json';
 
+function createLanguageSwitcher(
+    translator: DictionaryTranslator,
+    setI18nState: (i18nState: I18n) => void
+): I18nManager {
+    return {
+        setLanguage: (languageCode: LanguageCode) => {
+            setI18nState(createI18n(languageCode));
+        },
+    };
+}
+
 export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
+    // @ts-ignore
+    const language = window.navigator.userLanguage || window.navigator.language;
+    console.log(language);
+
     const [currentUserState, setCurrentUserState] = useState<AuthUser>(anonymousAuthUser);
-    const [i18nState] = useState<I18n>(createI18n('en-US'));
+    const [i18nState, setI18nState] = useState<I18n>(createI18n('en-US'));
     const translatorRef = useRef<Translator>(new DictionaryTranslator(enUS));
     const browserCurrentUserRepositoryRef = useRef(new BrowserCurrentUserRepository(setCurrentUserState));
     const configRef = useRef<Config>({
