@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { useI18n } from '@packages/core/i18n/i18n';
+import { useI18n } from './i18n';
 
 export type TranslationPlaceholders = {
     [key: string]: string;
