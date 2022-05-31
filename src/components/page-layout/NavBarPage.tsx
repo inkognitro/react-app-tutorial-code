@@ -6,9 +6,11 @@ import { Button, Toolbar, Typography, Container, Menu, MenuItem } from '@mui/mat
 import { useConfig } from '@packages/core/config';
 import { Home } from '@mui/icons-material';
 import { FunctionalLink, RoutingLink } from '@packages/core/routing';
+import { useTranslator } from '@packages/core/i18n';
 
 const LoggedInUserMenu: FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslator();
     const currentUserRepo = useCurrentUserRepository();
     const currentUser = useCurrentUser();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -47,14 +49,14 @@ const LoggedInUserMenu: FC = () => {
                         navigate('/user-management/my-settings');
                         closeMenu();
                     }}>
-                    My settings
+                    {t('core.nav.mySettings')}
                 </MenuItem>
                 <MenuItem
                     onClick={() => {
                         logoutUser();
                         closeMenu();
                     }}>
-                    Logout
+                    {t('core.nav.logout')}
                 </MenuItem>
             </Menu>
         </>
@@ -64,6 +66,7 @@ const LoggedInUserMenu: FC = () => {
 const Nav: FC = () => {
     const { companyName } = useConfig();
     const navigate = useNavigate();
+    const { t } = useTranslator();
     const currentUserRepo = useCurrentUserRepository();
     const currentUser = useCurrentUser();
     const isLoggedIn = currentUser.type === 'authenticated';
@@ -88,10 +91,10 @@ const Nav: FC = () => {
             {!isLoggedIn && (
                 <>
                     <FunctionalLink onClick={loginUser} noWrap variant="button" href="/" sx={{ p: 1, flexShrink: 0 }}>
-                        Login
+                        {t('core.nav.login')}
                     </FunctionalLink>{' '}
                     <Button variant="outlined" size="small" onClick={() => navigate('/auth/register')}>
-                        Sign up
+                        {t('core.nav.signUp')}
                     </Button>
                 </>
             )}

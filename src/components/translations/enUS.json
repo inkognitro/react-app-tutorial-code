@@ -1,0 +1,18 @@
+{
+  "core": {
+      "currentUser": {
+          "guestDisplayName": "Guest"
+      },
+      "nav": {
+          "logout": "Logout",
+          "login": "Login",
+          "signUp": "Sign Up",
+          "mySettings": "Settings"
+      }
+  },
+  "pages": {
+      "indexPage": {
+          "greeting": "Hi {{username}}!"
+      }
+  }
+}
