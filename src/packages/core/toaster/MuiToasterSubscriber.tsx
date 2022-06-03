@@ -1,29 +1,21 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Fade, Alert, Snackbar } from '@mui/material';
-import { ToastMessage as ToastMessageState } from './toaster';
+import { ToastMessage } from './toaster';
 import { v4 } from 'uuid';
 import { SubscribableToaster } from './subscribableToaster';
 
-type ToastMessageProps = {
-    data: ToastMessageState;
+type MuiToastMessageProps = {
+    data: ToastMessage;
     onClose: () => void;
 };
 
-const ToastMessage: FC<ToastMessageProps> = (props) => {
+const snackbarCloseAnimationDurationInMs = 300;
+
+const MuiToastMessage: FC<MuiToastMessageProps> = (props) => {
     const [open, setOpen] = useState(true);
-    const isRenderedRef = useRef(true);
-    useEffect(() => {
-        return () => {
-            isRenderedRef.current = false;
-        };
-    }, []);
-    function close() {
+    function triggerCloseOnParentAfterCloseAnimationHasFinished() {
         setOpen(false);
-        setTimeout(() => {
-            if (isRenderedRef.current) {
-                props.onClose();
-            }
-        }, 300);
+        setTimeout(() => props.onClose(), snackbarCloseAnimationDurationInMs);
     }
     return (
         <Snackbar
@@ -31,9 +23,11 @@ const ToastMessage: FC<ToastMessageProps> = (props) => {
             autoHideDuration={props.data.autoHideDurationInMs}
             TransitionComponent={Fade}
             open={open}
-            onAnimationEnd={() => props.onClose()}
-            onClose={() => close()}>
-            <Alert variant="filled" severity={props.data.severity} onClose={() => close()}>
+            onClose={() => triggerCloseOnParentAfterCloseAnimationHasFinished()}>
+            <Alert
+                variant="filled"
+                severity={props.data.severity}
+                onClose={() => triggerCloseOnParentAfterCloseAnimationHasFinished()}>
                 {props.data.content}
             </Alert>
         </Snackbar>
@@ -46,9 +40,9 @@ export type MuiToasterSubscriberProps = {
 
 export const MuiToasterSubscriber: FC<MuiToasterSubscriberProps> = (props) => {
     const subscriberIdRef = useRef(v4());
-    const pipelinedMessagesRef = useRef<ToastMessageState[]>([]);
-    const activeMessageRef = useRef<null | ToastMessageState>(null);
-    const [activeMessage, setActiveMessage] = useState<null | ToastMessageState>(null);
+    const pipelinedMessagesRef = useRef<ToastMessage[]>([]);
+    const activeMessageRef = useRef<null | ToastMessage>(null);
+    const [activeMessage, setActiveMessage] = useState<null | ToastMessage>(null);
     function showNextMessage() {
         const nextMessage = pipelinedMessagesRef.current.shift();
         if (activeMessageRef.current && !nextMessage) {
@@ -65,7 +59,7 @@ export const MuiToasterSubscriber: FC<MuiToasterSubscriberProps> = (props) => {
     useEffect(() => {
         props.toaster.subscribe({
             id: subscriberIdRef.current,
-            onShowMessage: (message: ToastMessageState) => {
+            onShowMessage: (message: ToastMessage) => {
                 pipelinedMessagesRef.current.push(message);
                 if (!activeMessageRef.current) {
                     showNextMessage();
@@ -73,9 +67,9 @@ export const MuiToasterSubscriber: FC<MuiToasterSubscriberProps> = (props) => {
             },
         });
         return () => props.toaster.unSubscribe(subscriberIdRef.current);
-    }, []);
+    }, [props.toaster, subscriberIdRef, pipelinedMessagesRef, activeMessageRef, showNextMessage]);
     if (!activeMessage) {
         return null;
     }
-    return <ToastMessage key={activeMessage.id} data={activeMessage} onClose={() => showNextMessage()} />;
+    return <MuiToastMessage key={activeMessage.id} data={activeMessage} onClose={() => showNextMessage()} />;
 };

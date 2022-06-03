@@ -11,19 +11,20 @@ export class SubscribableToaster implements Toaster {
 
     constructor() {
         this.subscribers = [];
+        this.showMessage = this.showMessage.bind(this);
+        this.subscribe = this.subscribe.bind(this);
+        this.unSubscribe = this.unSubscribe.bind(this);
     }
 
     showMessage(settings: ToastMessageCreationSettings) {
         const toastMessage = createToastMessage(settings);
-
         this.subscribers.forEach((subscriber) => {
             subscriber.onShowMessage(toastMessage);
         });
     }
 
     subscribe(subscriber: ToasterSubscriber) {
-        const subscribers = this.subscribers;
-        this.subscribers = [...subscribers, subscriber];
+        this.subscribers = [...this.subscribers, subscriber];
     }
 
     unSubscribe(subscriberId: string) {
