@@ -25,15 +25,15 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const [i18nState, setI18nState] = useState<I18n>(createI18n('en-US'));
     const translatorRef = useRef<DictionaryTranslator>(new DictionaryTranslator(enUS));
     const i18nManagerRef = useRef<BrowserI18nManager>(
-        new BrowserI18nManager((i18nState) => {
-            switch (i18nState.languageCode) {
+        new BrowserI18nManager((nextI18nState) => {
+            switch (nextI18nState.languageCode) {
                 case 'de-CH':
                     translatorRef.current.setDictionary(deCH);
                     break;
                 default:
                     translatorRef.current.setDictionary(enUS);
             }
-            setI18nState(i18nState);
+            setI18nState(nextI18nState);
         })
     );
     const browserCurrentUserRepositoryRef = useRef(new BrowserCurrentUserRepository(setCurrentUserState));
