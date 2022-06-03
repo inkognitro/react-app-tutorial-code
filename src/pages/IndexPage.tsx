@@ -20,8 +20,8 @@ export const IndexPage: FC = () => {
                 <Alert severity="info">
                     <strong>MuiToasterSubscriber:</strong>
                     <br />
-                    Note that if a toast message is displayed and you click outside of it, the current toast will
-                    automatically close!
+                    Note that if a toast message is displayed and you click outside of it, this toast message will
+                    automatically be closed!
                     <br />
                     <br />
                     <FunctionalLink onClick={() => showMessage({ content: greeting })}>
