@@ -19,6 +19,7 @@ import {
 } from '@packages/core/i18n';
 import enUS from '@components/translations/enUS.json';
 import deCH from '@components/translations/deCH.json';
+import { ToasterProvider, SubscribableToaster, SubscribableToasterProvider } from '@packages/core/toaster';
 
 export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const [currentUserState, setCurrentUserState] = useState<AuthUser>(anonymousAuthUser);
@@ -40,17 +41,24 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const configRef = useRef<Config>({
         companyName: 'ACME',
     });
+    const toasterRef = useRef(new SubscribableToaster());
     return (
         <BrowserRouter>
             <ConfigProvider value={configRef.current}>
                 <I18nProvider value={i18nState}>
-                    <I18nManagerProvider value={i18nManagerRef.current}>
-                        <TranslatorProvider value={translatorRef.current}>
-                            <CurrentUserRepositoryProvider value={browserCurrentUserRepositoryRef.current}>
-                                <CurrentUserProvider value={currentUserState}>{props.children}</CurrentUserProvider>
-                            </CurrentUserRepositoryProvider>
-                        </TranslatorProvider>
-                    </I18nManagerProvider>
+                    <ToasterProvider value={toasterRef.current}>
+                        <SubscribableToasterProvider value={toasterRef.current}>
+                            <I18nManagerProvider value={i18nManagerRef.current}>
+                                <TranslatorProvider value={translatorRef.current}>
+                                    <CurrentUserRepositoryProvider value={browserCurrentUserRepositoryRef.current}>
+                                        <CurrentUserProvider value={currentUserState}>
+                                            {props.children}
+                                        </CurrentUserProvider>
+                                    </CurrentUserRepositoryProvider>
+                                </TranslatorProvider>
+                            </I18nManagerProvider>
+                        </SubscribableToasterProvider>
+                    </ToasterProvider>
                 </I18nProvider>
             </ConfigProvider>
         </BrowserRouter>

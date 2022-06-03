@@ -19,6 +19,7 @@ import {
     TranslatorProvider,
     I18nManagerProvider,
 } from '@packages/core/i18n';
+import { ToasterProvider, SubscribableToaster, SubscribableToasterProvider } from '@packages/core/toaster';
 
 class StubCurrentUserRepository implements CurrentUserRepository {
     setCurrentUser(currentUser: AuthUser) {}
@@ -30,6 +31,7 @@ class StubTranslator implements Translator {
         return translationId;
     }
 }
+
 class StubI18nManager implements I18nManager {
     setLanguage(_: LanguageCode) {}
     init() {}
@@ -43,17 +45,24 @@ export const TestServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const configRef = useRef<Config>({
         companyName: 'ACME',
     });
+    const toasterRef = useRef(new SubscribableToaster());
     return (
         <MemoryRouter>
             <ConfigProvider value={configRef.current}>
                 <I18nProvider value={i18nState}>
-                    <I18nManagerProvider value={i18nManagerRef.current}>
-                        <TranslatorProvider value={translatorRef.current}>
-                            <CurrentUserRepositoryProvider value={stubCurrentUserRepositoryRef.current}>
-                                <CurrentUserProvider value={anonymousAuthUser}>{props.children}</CurrentUserProvider>
-                            </CurrentUserRepositoryProvider>
-                        </TranslatorProvider>
-                    </I18nManagerProvider>
+                    <ToasterProvider value={toasterRef.current}>
+                        <SubscribableToasterProvider value={toasterRef.current}>
+                            <I18nManagerProvider value={i18nManagerRef.current}>
+                                <TranslatorProvider value={translatorRef.current}>
+                                    <CurrentUserRepositoryProvider value={stubCurrentUserRepositoryRef.current}>
+                                        <CurrentUserProvider value={anonymousAuthUser}>
+                                            {props.children}
+                                        </CurrentUserProvider>
+                                    </CurrentUserRepositoryProvider>
+                                </TranslatorProvider>
+                            </I18nManagerProvider>
+                        </SubscribableToasterProvider>
+                    </ToasterProvider>
                 </I18nProvider>
             </ConfigProvider>
         </MemoryRouter>
