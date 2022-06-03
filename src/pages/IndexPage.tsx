@@ -16,7 +16,7 @@ export const IndexPage: FC = () => {
     return (
         <NavBarPage title="Home">
             {greeting}
-            <div style={{ marginTop: '40px' }}>
+            <div style={{ marginTop: '15px' }}>
                 <Alert severity="info">
                     <strong>MuiToasterSubscriber:</strong>
                     <br />
