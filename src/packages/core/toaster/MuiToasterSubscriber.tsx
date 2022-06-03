@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Fade, Alert, Snackbar } from '@mui/material';
 import { ToastMessage } from './toaster';
 import { v4 } from 'uuid';
@@ -40,10 +40,11 @@ export type MuiToasterSubscriberProps = {
 
 export const MuiToasterSubscriber: FC<MuiToasterSubscriberProps> = (props) => {
     const subscriberIdRef = useRef(v4());
+    const subscriberId = subscriberIdRef.current;
     const pipelinedMessagesRef = useRef<ToastMessage[]>([]);
     const activeMessageRef = useRef<null | ToastMessage>(null);
     const [activeMessage, setActiveMessage] = useState<null | ToastMessage>(null);
-    function showNextMessage() {
+    const showNextMessage = useCallback(() => {
         const nextMessage = pipelinedMessagesRef.current.shift();
         if (activeMessageRef.current && !nextMessage) {
             activeMessageRef.current = null;
@@ -55,7 +56,7 @@ export const MuiToasterSubscriber: FC<MuiToasterSubscriberProps> = (props) => {
         }
         activeMessageRef.current = nextMessage;
         setActiveMessage(nextMessage);
-    }
+    }, [pipelinedMessagesRef, activeMessageRef, setActiveMessage]);
     useEffect(() => {
         props.toaster.subscribe({
             id: subscriberIdRef.current,
@@ -66,8 +67,8 @@ export const MuiToasterSubscriber: FC<MuiToasterSubscriberProps> = (props) => {
                 }
             },
         });
-        return () => props.toaster.unSubscribe(subscriberIdRef.current);
-    }, [props.toaster, subscriberIdRef, pipelinedMessagesRef, activeMessageRef, showNextMessage]);
+        return () => props.toaster.unSubscribe(subscriberId);
+    }, [props.toaster, subscriberId, pipelinedMessagesRef, activeMessageRef, showNextMessage]);
     if (!activeMessage) {
         return null;
     }
