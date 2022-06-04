@@ -17,6 +17,12 @@
   "pages": {
       "indexPage": {
           "greeting": "Hi {{username}}!"
+      },
+      "registerPage": {
+          "title": "Sign up",
+          "username": "Username",
+          "agreeOnTermsAndConditions": "I agree on the {{termsAndConditions}}.",
+          "termsAndConditions": "terms and conditions."
       }
   }
 }
