@@ -1,5 +1,5 @@
-export * from './formElement';
-export * from './nestedStatesEnrichment';
+export * from './formElementState';
+export * from './nestedFormElementStatesEnrichment';
 export * from './TextField';
 export * from './Checkbox';
 export * from './Form';

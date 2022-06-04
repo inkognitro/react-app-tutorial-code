@@ -1,4 +1,4 @@
-import { FieldMessage, FormElementState, FormElementTypes, Message } from './formElement';
+import { FieldMessage, FormElementState, FormElementTypes, Message } from './formElementState';
 
 type FieldMessagePath = (string | number)[];
 
