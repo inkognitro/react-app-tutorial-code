@@ -31,3 +31,21 @@ export type TextFieldState = GenericFormElementState<
 export type CheckboxState = GenericFormElementState<FormElementTypes.CHECKBOX, { value: boolean; messages: Message[] }>;
 
 export type FormElementState = TextFieldState | CheckboxState;
+
+export function createTextFieldState(partial: Partial<Omit<TextFieldState, 'type'>> = {}): TextFieldState {
+    return {
+        messages: [],
+        value: '',
+        ...partial,
+        type: FormElementTypes.TEXT_FIELD,
+    };
+}
+
+export function createCheckboxState(partial: Partial<Omit<CheckboxState, 'type'>> = {}): CheckboxState {
+    return {
+        messages: [],
+        value: false,
+        ...partial,
+        type: FormElementTypes.CHECKBOX,
+    };
+}

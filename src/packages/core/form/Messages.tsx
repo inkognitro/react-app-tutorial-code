@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Message as MessageState } from './formElement';
+import { Message as MessageState } from './formElementState';
 import styled from 'styled-components';
 import { T } from '@packages/core/i18n';
 

@@ -1,4 +1,4 @@
-import { TextFieldState } from './formElement';
+import { TextFieldState } from './formElementState';
 import React, { CSSProperties, FC } from 'react';
 import { TextField as MuiTextField, InputProps, FormControl } from '@mui/material';
 import { Messages } from './Messages';
