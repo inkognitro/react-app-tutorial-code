@@ -21,8 +21,10 @@
       "registerPage": {
           "title": "Sign up",
           "username": "Username",
+          "email": "Email address",
+          "password": "Password",
           "agreeOnTermsAndConditions": "I agree on the {{termsAndConditions}}.",
-          "termsAndConditions": "terms and conditions."
+          "termsAndConditions": "terms and conditions"
       }
   }
 }

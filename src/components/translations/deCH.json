@@ -17,6 +17,14 @@
   "pages": {
       "indexPage": {
           "greeting": "Hallo {{username}}!"
+      },
+      "registerPage": {
+        "title": "Registrieren",
+        "username": "Benutzername",
+        "email": "E-Mail Adresse",
+        "password": "Passwort",
+        "agreeOnTermsAndConditions": "Ich bin mit den {{termsAndConditions}} einverstanden.",
+        "termsAndConditions": "AGB"
       }
   }
 }
