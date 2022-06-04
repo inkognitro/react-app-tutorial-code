@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { NavBarPage } from '@components/page-layout';
 import { useTranslator, T } from '@packages/core/i18n';
 import {
+    Button,
     Checkbox,
     CheckboxState,
     createCheckboxState,
@@ -59,6 +60,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
                 variant="outlined"
                 margin="dense"
                 fullWidth
+                name="username"
             />
             <TextField
                 label={t('pages.registerPage.email')}
@@ -69,6 +71,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
                 variant="outlined"
                 margin="dense"
                 fullWidth
+                name="email"
             />
             <TextField
                 label={t('pages.registerPage.password')}
@@ -78,6 +81,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
                 variant="outlined"
                 margin="dense"
                 fullWidth
+                name="password"
             />
             <Checkbox
                 label={termsAndConditionsLabel}
@@ -94,10 +98,13 @@ export const RegisterPage: FC = () => {
     const [registrationForm, setRegistrationForm] = useState(createRegistrationFormState());
     return (
         <NavBarPage title={t('pages.registerPage.title')}>
-            <Typography component="h1" variant="h4">
+            <Typography component="h1" variant="h5">
                 {t('pages.registerPage.title')}
             </Typography>
             <RegistrationForm data={registrationForm} onChangeData={(data) => setRegistrationForm(data)} />
+            <Button margin="dense" variant="outlined" color="primary">
+                {t('pages.registerPage.signUp')}
+            </Button>
         </NavBarPage>
     );
 };

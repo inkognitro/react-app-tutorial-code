@@ -24,7 +24,8 @@
         "email": "E-Mail Adresse",
         "password": "Passwort",
         "agreeOnTermsAndConditions": "Ich bin mit den {{termsAndConditions}} einverstanden.",
-        "termsAndConditions": "AGB"
+        "termsAndConditions": "AGB",
+        "signUp": "Registrieren"
       }
   }
 }
