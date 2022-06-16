@@ -8,7 +8,7 @@ const FormElementTypesArray = Object.keys(FormElementTypes).map((key) => {
 });
 
 function isOfTypeFormElement(anyState: any): anyState is FormElementState {
-    const pseudoFormElement = <FormElementState>anyState;
+    const pseudoFormElement = anyState as FormElementState;
     if (!pseudoFormElement.type) {
         return false;
     }
@@ -16,7 +16,7 @@ function isOfTypeFormElement(anyState: any): anyState is FormElementState {
 }
 
 function isOfTypeFieldMessagePath(anyState: any): anyState is FieldMessagePath {
-    const pseudoPath = <FieldMessagePath>anyState;
+    const pseudoPath = anyState as FieldMessagePath;
     if (!Array.isArray(pseudoPath)) {
         return false;
     }
