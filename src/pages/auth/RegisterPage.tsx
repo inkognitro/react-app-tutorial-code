@@ -6,15 +6,24 @@ import {
     Checkbox,
     CheckboxState,
     createCheckboxState,
+    createSingleSelectionState,
     createTextFieldState,
     Form,
+    SingleSelectionState,
     TextField,
     TextFieldState,
 } from '@packages/core/form';
 import { FunctionalLink } from '@packages/core/routing';
 import { Typography } from '@mui/material';
+import { SingleSelection } from '@packages/core/form/SingleSelection';
+import { Entry, useArrayCollectionProvider } from '@packages/core/collection';
+
+type GenderId = 'f' | 'm' | 'o';
+
+const genderIds: GenderId[] = ['f', 'm', 'o'];
 
 type RegistrationFormState = {
+    genderSelection: SingleSelectionState<GenderId>;
     usernameField: TextFieldState;
     emailField: TextFieldState;
     passwordField: TextFieldState;
@@ -23,6 +32,7 @@ type RegistrationFormState = {
 
 function createRegistrationFormState(): RegistrationFormState {
     return {
+        genderSelection: createSingleSelectionState(),
         usernameField: createTextFieldState(),
         emailField: createTextFieldState(),
         passwordField: createTextFieldState(),
@@ -36,6 +46,10 @@ type RegistrationFormProps = {
 };
 
 const RegistrationForm: FC<RegistrationFormProps> = (props) => {
+    const genderIdsProvider = useArrayCollectionProvider<GenderId>({
+        dataArray: genderIds,
+        createEntryKey: (gId) => gId,
+    });
     const { t } = useTranslator();
     const termsAndConditionsLabel = (
         <T
@@ -51,6 +65,29 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
     );
     return (
         <Form>
+            <SingleSelection
+                data={props.data.genderSelection}
+                onChangeData={(data) => props.onChangeData({ ...props.data, genderSelection: data })}
+                provider={genderIdsProvider}
+                renderOption={(e: Entry<GenderId>) => {
+                    switch (e.data) {
+                        case 'f':
+                            return t('pages.registerPage.genderOptions.female');
+                        case 'm':
+                            return t('pages.registerPage.genderOptions.male');
+                        case 'o':
+                            return t('pages.registerPage.genderOptions.other');
+                        default:
+                            console.error(`genderId "${e.data}" is not supported!`);
+                            return null;
+                    }
+                }}
+                label={t('pages.registerPage.gender')}
+                variant="outlined"
+                margin="dense"
+                canChooseNone
+                fullWidth
+            />
             <TextField
                 label={t('pages.registerPage.username')}
                 data={props.data.usernameField}

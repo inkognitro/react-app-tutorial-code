@@ -12,6 +12,11 @@
       "languages": {
           "enUS": "English (US)",
           "deCH": "Deutsch (CH)"
+      },
+      "form": {
+          "selection": {
+              "choose": "Please choose"
+          }
       }
   },
   "pages": {
@@ -19,6 +24,12 @@
           "greeting": "Hi {{username}}!"
       },
       "registerPage": {
+          "gender": "Gender",
+          "genderOptions": {
+              "female": "Female",
+              "male": "Male",
+              "other": "Other"
+          },
           "title": "Sign up",
           "username": "Username",
           "email": "Email address",

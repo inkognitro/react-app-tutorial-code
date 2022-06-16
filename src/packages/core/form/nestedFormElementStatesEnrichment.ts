@@ -54,6 +54,7 @@ function getWithMessagesEnrichedFormElementState<S extends FormElementState>(
     switch (state.type) {
         case FormElementTypes.TEXT_FIELD:
         case FormElementTypes.CHECKBOX:
+        case FormElementTypes.SINGLE_SELECTION:
             if (!state.pathPart) {
                 return state;
             }
