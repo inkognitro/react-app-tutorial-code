@@ -9,7 +9,6 @@ export type ButtonProps = MuiButtonProps & {
 export const Button: FC<ButtonProps> = (props) => {
     let muiButtonProps: ButtonProps = { ...props };
     delete muiButtonProps.margin;
-    delete muiButtonProps.onClick;
     return (
         <FormControl margin={props.margin} fullWidth={props.fullWidth}>
             <MuiButton {...muiButtonProps} />
