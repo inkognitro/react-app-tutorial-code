@@ -19,6 +19,9 @@ import {
     TranslatorProvider,
     I18nManagerProvider,
 } from '@packages/core/i18n';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { ThemeProvider as ScThemeProvider } from 'styled-components';
+import { theme } from '@components/theme';
 
 class StubCurrentUserRepository implements CurrentUserRepository {
     setCurrentUser(currentUser: AuthUser) {}
@@ -44,18 +47,24 @@ export const TestServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
         companyName: 'ACME',
     });
     return (
-        <MemoryRouter>
-            <ConfigProvider value={configRef.current}>
-                <I18nProvider value={i18nState}>
-                    <I18nManagerProvider value={i18nManagerRef.current}>
-                        <TranslatorProvider value={translatorRef.current}>
-                            <CurrentUserRepositoryProvider value={stubCurrentUserRepositoryRef.current}>
-                                <CurrentUserProvider value={anonymousAuthUser}>{props.children}</CurrentUserProvider>
-                            </CurrentUserRepositoryProvider>
-                        </TranslatorProvider>
-                    </I18nManagerProvider>
-                </I18nProvider>
-            </ConfigProvider>
-        </MemoryRouter>
+        <MuiThemeProvider theme={theme}>
+            <ScThemeProvider theme={theme}>
+                <MemoryRouter>
+                    <ConfigProvider value={configRef.current}>
+                        <I18nProvider value={i18nState}>
+                            <I18nManagerProvider value={i18nManagerRef.current}>
+                                <TranslatorProvider value={translatorRef.current}>
+                                    <CurrentUserRepositoryProvider value={stubCurrentUserRepositoryRef.current}>
+                                        <CurrentUserProvider value={anonymousAuthUser}>
+                                            {props.children}
+                                        </CurrentUserProvider>
+                                    </CurrentUserRepositoryProvider>
+                                </TranslatorProvider>
+                            </I18nManagerProvider>
+                        </I18nProvider>
+                    </ConfigProvider>
+                </MemoryRouter>
+            </ScThemeProvider>
+        </MuiThemeProvider>
     );
 };
