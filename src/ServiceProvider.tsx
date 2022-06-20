@@ -46,9 +46,9 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     });
     const toasterRef = useRef(new SubscribableToaster());
     return (
-        <BrowserRouter>
-            <MuiThemeProvider theme={theme}>
-                <ScThemeProvider theme={theme}>
+        <MuiThemeProvider theme={theme}>
+            <ScThemeProvider theme={theme}>
+                <BrowserRouter>
                     <ConfigProvider value={configRef.current}>
                         <I18nProvider value={i18nState}>
                             <ToasterProvider value={toasterRef.current}>
@@ -67,8 +67,8 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
                             </ToasterProvider>
                         </I18nProvider>
                     </ConfigProvider>
-                </ScThemeProvider>
-            </MuiThemeProvider>
-        </BrowserRouter>
+                </BrowserRouter>
+            </ScThemeProvider>
+        </MuiThemeProvider>
     );
 };

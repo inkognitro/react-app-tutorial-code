@@ -99,8 +99,6 @@ export const RegisterPage: FC = () => {
     const { t } = useTranslator();
     const [registrationForm, setRegistrationForm] = useState(createRegistrationFormState());
     function addErrors() {
-        console.log('sdfkljsdfjklsd');
-
         const fieldMessages: FieldMessage[] = [
             {
                 path: ['username'],
@@ -111,14 +109,6 @@ export const RegisterPage: FC = () => {
                 },
             },
         ];
-
-        console.log(
-            getStateWithEnrichedFormElementStates(registrationForm, {
-                messages: fieldMessages,
-                prefixPath: [],
-            })
-        );
-
         setRegistrationForm(
             getStateWithEnrichedFormElementStates(registrationForm, {
                 messages: fieldMessages,
