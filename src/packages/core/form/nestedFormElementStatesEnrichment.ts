@@ -89,7 +89,7 @@ export function getStateWithEnrichedFormElementStates<S = any>(anyState: S, sett
                 ? [...settings.prefixPath, ...subState.pathPart]
                 : settings.prefixPath;
         // @ts-ignore
-        newState[key] = getStateWithModifiedFormElementMessages(subState, {
+        newState[key] = getStateWithEnrichedFormElementStates(subState, {
             ...settings,
             prefixPath,
         });
