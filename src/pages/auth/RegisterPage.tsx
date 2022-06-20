@@ -7,7 +7,9 @@ import {
     CheckboxState,
     createCheckboxState,
     createTextFieldState,
+    FieldMessage,
     Form,
+    getStateWithEnrichedFormElementStates,
     TextField,
     TextFieldState,
 } from '@packages/core/form';
@@ -23,7 +25,7 @@ type RegistrationFormState = {
 
 function createRegistrationFormState(): RegistrationFormState {
     return {
-        usernameField: createTextFieldState(),
+        usernameField: createTextFieldState({ pathPart: ['username'] }),
         emailField: createTextFieldState(),
         passwordField: createTextFieldState(),
         agreeCheckbox: createCheckboxState(),
@@ -96,13 +98,41 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
 export const RegisterPage: FC = () => {
     const { t } = useTranslator();
     const [registrationForm, setRegistrationForm] = useState(createRegistrationFormState());
+    function addErrors() {
+        console.log('sdfkljsdfjklsd');
+
+        const fieldMessages: FieldMessage[] = [
+            {
+                path: ['username'],
+                message: {
+                    id: 'foo',
+                    severity: 'error',
+                    translation: { id: 'missing.translation.key' },
+                },
+            },
+        ];
+
+        console.log(
+            getStateWithEnrichedFormElementStates(registrationForm, {
+                messages: fieldMessages,
+                prefixPath: [],
+            })
+        );
+
+        setRegistrationForm(
+            getStateWithEnrichedFormElementStates(registrationForm, {
+                messages: fieldMessages,
+                prefixPath: [],
+            })
+        );
+    }
     return (
         <NavBarPage title={t('pages.registerPage.title')}>
             <Typography component="h1" variant="h5">
                 {t('pages.registerPage.title')}
             </Typography>
             <RegistrationForm data={registrationForm} onChangeData={(data) => setRegistrationForm(data)} />
-            <Button margin="dense" variant="outlined" color="primary">
+            <Button margin="dense" variant="outlined" color="primary" onClick={() => addErrors()}>
                 {t('pages.registerPage.signUp')}
             </Button>
         </NavBarPage>

@@ -20,6 +20,9 @@ import {
 import enUS from '@components/translations/enUS.json';
 import deCH from '@components/translations/deCH.json';
 import { ToasterProvider, SubscribableToaster, SubscribableToasterProvider } from '@packages/core/toaster';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { ThemeProvider as ScThemeProvider } from 'styled-components';
+import { theme } from '@components/theme';
 
 export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const [currentUserState, setCurrentUserState] = useState<AuthUser>(anonymousAuthUser);
@@ -44,23 +47,28 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const toasterRef = useRef(new SubscribableToaster());
     return (
         <BrowserRouter>
-            <ConfigProvider value={configRef.current}>
-                <I18nProvider value={i18nState}>
-                    <ToasterProvider value={toasterRef.current}>
-                        <SubscribableToasterProvider value={toasterRef.current}>
-                            <I18nManagerProvider value={i18nManagerRef.current}>
-                                <TranslatorProvider value={translatorRef.current}>
-                                    <CurrentUserRepositoryProvider value={browserCurrentUserRepositoryRef.current}>
-                                        <CurrentUserProvider value={currentUserState}>
-                                            {props.children}
-                                        </CurrentUserProvider>
-                                    </CurrentUserRepositoryProvider>
-                                </TranslatorProvider>
-                            </I18nManagerProvider>
-                        </SubscribableToasterProvider>
-                    </ToasterProvider>
-                </I18nProvider>
-            </ConfigProvider>
+            <MuiThemeProvider theme={theme}>
+                <ScThemeProvider theme={theme}>
+                    <ConfigProvider value={configRef.current}>
+                        <I18nProvider value={i18nState}>
+                            <ToasterProvider value={toasterRef.current}>
+                                <SubscribableToasterProvider value={toasterRef.current}>
+                                    <I18nManagerProvider value={i18nManagerRef.current}>
+                                        <TranslatorProvider value={translatorRef.current}>
+                                            <CurrentUserRepositoryProvider
+                                                value={browserCurrentUserRepositoryRef.current}>
+                                                <CurrentUserProvider value={currentUserState}>
+                                                    {props.children}
+                                                </CurrentUserProvider>
+                                            </CurrentUserRepositoryProvider>
+                                        </TranslatorProvider>
+                                    </I18nManagerProvider>
+                                </SubscribableToasterProvider>
+                            </ToasterProvider>
+                        </I18nProvider>
+                    </ConfigProvider>
+                </ScThemeProvider>
+            </MuiThemeProvider>
         </BrowserRouter>
     );
 };
