@@ -19,6 +19,9 @@ import {
 } from '@packages/core/i18n';
 import enUS from '@components/translations/enUS.json';
 import deCH from '@components/translations/deCH.json';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { ThemeProvider as ScThemeProvider } from 'styled-components';
+import { theme } from '@components/theme';
 
 export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
     const [currentUserState, setCurrentUserState] = useState<AuthUser>(anonymousAuthUser);
@@ -41,18 +44,24 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
         companyName: 'ACME',
     });
     return (
-        <BrowserRouter>
-            <ConfigProvider value={configRef.current}>
-                <I18nProvider value={i18nState}>
-                    <I18nManagerProvider value={i18nManagerRef.current}>
-                        <TranslatorProvider value={translatorRef.current}>
-                            <CurrentUserRepositoryProvider value={browserCurrentUserRepositoryRef.current}>
-                                <CurrentUserProvider value={currentUserState}>{props.children}</CurrentUserProvider>
-                            </CurrentUserRepositoryProvider>
-                        </TranslatorProvider>
-                    </I18nManagerProvider>
-                </I18nProvider>
-            </ConfigProvider>
-        </BrowserRouter>
+        <MuiThemeProvider theme={theme}>
+            <ScThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <ConfigProvider value={configRef.current}>
+                        <I18nProvider value={i18nState}>
+                            <I18nManagerProvider value={i18nManagerRef.current}>
+                                <TranslatorProvider value={translatorRef.current}>
+                                    <CurrentUserRepositoryProvider value={browserCurrentUserRepositoryRef.current}>
+                                        <CurrentUserProvider value={currentUserState}>
+                                            {props.children}
+                                        </CurrentUserProvider>
+                                    </CurrentUserRepositoryProvider>
+                                </TranslatorProvider>
+                            </I18nManagerProvider>
+                        </I18nProvider>
+                    </ConfigProvider>
+                </BrowserRouter>
+            </ScThemeProvider>
+        </MuiThemeProvider>
     );
 };
