@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { NavBarPage } from '@components/page-layout';
-import { useTranslator, T } from '@packages/core/i18n';
+import { T, useTranslator } from '@packages/core/i18n';
 import {
     Button,
     Checkbox,
@@ -18,7 +18,7 @@ import { FunctionalLink } from '@packages/core/routing';
 import { Typography } from '@mui/material';
 import { SingleSelection } from '@packages/core/form/SingleSelection';
 import { Entry, useArrayCollectionProvider } from '@packages/core/collection';
-import { useApiV1RequestHandler } from '@packages/core/api-v1/core';
+import { ApiV1ResponseTypes, useApiV1RequestHandler } from '@packages/core/api-v1/core';
 import { registerUser } from '@packages/core/api-v1/auth';
 import { useCurrentUserRepository } from '@packages/core/auth';
 
@@ -161,10 +161,9 @@ export const RegisterPage: FC = () => {
             if (!rr.response) {
                 return;
             }
-            const responseBody = rr.response.body;
-            if (rr.response.type !== 'success') {
+            if (rr.response.type !== ApiV1ResponseTypes.SUCCESS) {
                 const newRegistrationFormState = getStateWithEnrichedFormElementStates(registrationForm, {
-                    messages: responseBody.fieldMessages,
+                    messages: rr.response.body.fieldMessages,
                     prefixPath: [],
                 });
                 setRegistrationForm(newRegistrationFormState);
@@ -172,12 +171,13 @@ export const RegisterPage: FC = () => {
             }
             currentUserRepo.setCurrentUser({
                 type: 'authenticated',
-                apiKey: responseBody.data.accessToken,
+                apiKey: rr.response.body.data.accessToken,
                 data: {
-                    id: responseBody.data.user.id,
-                    username: responseBody.data.user.username,
+                    id: rr.response.body.data.user.id,
+                    username: rr.response.body.data.user.username,
                 },
             });
+            // todo: navigate to home!
         });
     }
     return (
