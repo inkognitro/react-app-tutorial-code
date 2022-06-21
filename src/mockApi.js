@@ -16,11 +16,6 @@ function createErrorMessage(messageId, translationId) {
     };
 }
 
-app.options('/api/v1/auth/register', function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.send();
-});
-
 app.post('/api/v1/auth/register', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*")
 
