@@ -2,7 +2,7 @@ import { Translation } from '@packages/core/i18n';
 
 export type Message = {
     id: string;
-    severity: 'info' | 'success' | 'error';
+    severity: 'info' | 'success' | 'warning' | 'error';
     translation: Translation;
 };
 
