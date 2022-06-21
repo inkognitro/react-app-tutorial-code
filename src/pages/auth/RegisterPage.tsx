@@ -21,6 +21,7 @@ import { Entry, useArrayCollectionProvider } from '@packages/core/collection';
 import { ApiV1ResponseTypes, useApiV1RequestHandler } from '@packages/core/api-v1/core';
 import { registerUser } from '@packages/core/api-v1/auth';
 import { useCurrentUserRepository } from '@packages/core/auth';
+import { useNavigate } from 'react-router-dom';
 
 type GenderId = 'f' | 'm' | 'o';
 
@@ -140,6 +141,7 @@ export const RegisterPage: FC = () => {
     const [registrationForm, setRegistrationForm] = useState(createRegistrationFormState());
     const apiV1RequestHandler = useApiV1RequestHandler();
     const currentUserRepo = useCurrentUserRepository();
+    const navigate = useNavigate();
     function canFormBeSubmitted(): boolean {
         return registrationForm.agreeCheckbox.value;
     }
@@ -147,6 +149,11 @@ export const RegisterPage: FC = () => {
         if (!canFormBeSubmitted()) {
             return;
         }
+        const newRegistrationFormState = getStateWithEnrichedFormElementStates(registrationForm, {
+            messages: [],
+            prefixPath: [],
+        });
+        setRegistrationForm(newRegistrationFormState);
         registerUser(apiV1RequestHandler, {
             username: registrationForm.usernameField.value,
             email: registrationForm.emailField.value,
@@ -172,7 +179,7 @@ export const RegisterPage: FC = () => {
                     username: rr.response.body.data.user.username,
                 },
             });
-            // todo: navigate to home!
+            navigate('/');
         });
     }
     return (
