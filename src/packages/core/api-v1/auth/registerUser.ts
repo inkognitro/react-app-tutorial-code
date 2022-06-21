@@ -15,8 +15,8 @@ import { RequestResponse, Response as HttpResponse } from '../../http';
 const endpointId: ApiV1EndpointId = { method: 'post', path: '/auth/register' };
 
 type AuthUser = {
-    accessToken: string;
-    data: {
+    apiKey: string;
+    user: {
         id: string;
         username: string;
     };
