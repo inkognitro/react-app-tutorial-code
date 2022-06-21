@@ -17,6 +17,8 @@ import { FunctionalLink } from '@packages/core/routing';
 import { Typography } from '@mui/material';
 import { SingleSelection } from '@packages/core/form/SingleSelection';
 import { Entry, useArrayCollectionProvider } from '@packages/core/collection';
+import { useApiV1RequestHandler } from '@packages/core/api-v1/core';
+import { registerUser } from '@packages/core/api-v1/auth';
 
 type GenderId = 'f' | 'm' | 'o';
 
@@ -133,13 +135,17 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
 export const RegisterPage: FC = () => {
     const { t } = useTranslator();
     const [registrationForm, setRegistrationForm] = useState(createRegistrationFormState());
+    const apiV1RequestHandler = useApiV1RequestHandler();
+    function submitForm() {
+        registerUser(apiV1RequestHandler, {});
+    }
     return (
         <NavBarPage title={t('pages.registerPage.title')}>
             <Typography component="h1" variant="h5">
                 {t('pages.registerPage.title')}
             </Typography>
             <RegistrationForm data={registrationForm} onChangeData={(data) => setRegistrationForm(data)} />
-            <Button margin="dense" variant="outlined" color="primary">
+            <Button margin="dense" variant="outlined" color="primary" onClick={() => submitForm()}>
                 {t('pages.registerPage.signUp')}
             </Button>
         </NavBarPage>
