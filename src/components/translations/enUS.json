@@ -1,4 +1,9 @@
 {
+  "api": {
+      "v1": {
+          "invalidValue": "Invalid value"
+      }
+  },
   "core": {
       "currentUser": {
           "guestDisplayName": "Guest"

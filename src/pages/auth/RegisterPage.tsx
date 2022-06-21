@@ -36,10 +36,10 @@ type RegistrationFormState = {
 
 function createRegistrationFormState(): RegistrationFormState {
     return {
-        genderSelection: createSingleSelectionState(),
-        usernameField: createTextFieldState(),
-        emailField: createTextFieldState(),
-        passwordField: createTextFieldState(),
+        genderSelection: createSingleSelectionState({ pathPart: ['gender'] }),
+        usernameField: createTextFieldState({ pathPart: ['username'] }),
+        emailField: createTextFieldState({ pathPart: ['email'] }),
+        passwordField: createTextFieldState({ pathPart: ['password'] }),
         agreeCheckbox: createCheckboxState(),
     };
 }
@@ -141,13 +141,7 @@ export const RegisterPage: FC = () => {
     const apiV1RequestHandler = useApiV1RequestHandler();
     const currentUserRepo = useCurrentUserRepository();
     function canFormBeSubmitted(): boolean {
-        return (
-            !!registrationForm.genderSelection.chosenOption &&
-            !!registrationForm.usernameField.value.length &&
-            !!registrationForm.emailField.value.length &&
-            !!registrationForm.passwordField.value.length &&
-            registrationForm.agreeCheckbox.value
-        );
+        return registrationForm.agreeCheckbox.value;
     }
     function submitForm() {
         if (!canFormBeSubmitted()) {
