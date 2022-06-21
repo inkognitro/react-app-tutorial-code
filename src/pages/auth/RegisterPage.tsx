@@ -9,6 +9,7 @@ import {
     createSingleSelectionState,
     createTextFieldState,
     Form,
+    getStateWithEnrichedFormElementStates,
     SingleSelectionState,
     TextField,
     TextFieldState,
@@ -19,6 +20,7 @@ import { SingleSelection } from '@packages/core/form/SingleSelection';
 import { Entry, useArrayCollectionProvider } from '@packages/core/collection';
 import { useApiV1RequestHandler } from '@packages/core/api-v1/core';
 import { registerUser } from '@packages/core/api-v1/auth';
+import { useCurrentUserRepository } from '@packages/core/auth';
 
 type GenderId = 'f' | 'm' | 'o';
 
@@ -136,8 +138,47 @@ export const RegisterPage: FC = () => {
     const { t } = useTranslator();
     const [registrationForm, setRegistrationForm] = useState(createRegistrationFormState());
     const apiV1RequestHandler = useApiV1RequestHandler();
+    const currentUserRepo = useCurrentUserRepository();
+    function canFormBeSubmitted(): boolean {
+        return (
+            !!registrationForm.genderSelection.chosenOption &&
+            !!registrationForm.usernameField.value.length &&
+            !!registrationForm.emailField.value.length &&
+            !!registrationForm.passwordField.value.length &&
+            registrationForm.agreeCheckbox.value
+        );
+    }
     function submitForm() {
-        registerUser(apiV1RequestHandler, {});
+        if (!canFormBeSubmitted()) {
+            return;
+        }
+        registerUser(apiV1RequestHandler, {
+            username: registrationForm.usernameField.value,
+            email: registrationForm.emailField.value,
+            gender: registrationForm.genderSelection.chosenOption?.data as GenderId,
+            password: registrationForm.passwordField.value,
+        }).then((rr) => {
+            if (!rr.response) {
+                return;
+            }
+            const responseBody = rr.response.body;
+            if (rr.response.type !== 'success') {
+                const newRegistrationFormState = getStateWithEnrichedFormElementStates(registrationForm, {
+                    messages: responseBody.fieldMessages,
+                    prefixPath: [],
+                });
+                setRegistrationForm(newRegistrationFormState);
+                return;
+            }
+            currentUserRepo.setCurrentUser({
+                type: 'authenticated',
+                apiKey: responseBody.data.accessToken,
+                data: {
+                    id: responseBody.data.user.id,
+                    username: responseBody.data.user.username,
+                },
+            });
+        });
     }
     return (
         <NavBarPage title={t('pages.registerPage.title')}>
@@ -145,7 +186,12 @@ export const RegisterPage: FC = () => {
                 {t('pages.registerPage.title')}
             </Typography>
             <RegistrationForm data={registrationForm} onChangeData={(data) => setRegistrationForm(data)} />
-            <Button margin="dense" variant="outlined" color="primary" onClick={() => submitForm()}>
+            <Button
+                margin="dense"
+                variant="outlined"
+                color="primary"
+                disabled={!canFormBeSubmitted()}
+                onClick={() => submitForm()}>
                 {t('pages.registerPage.signUp')}
             </Button>
         </NavBarPage>
