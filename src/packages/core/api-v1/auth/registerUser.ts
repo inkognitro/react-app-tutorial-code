@@ -10,7 +10,6 @@ import {
     ApiV1Request,
 } from '../core';
 import { RequestResponse, Response as HttpResponse } from '../../http';
-import { LanguageCode } from '@packages/core/i18n';
 
 const endpointId: ApiV1EndpointId = { method: 'post', path: '/auth/register' };
 
@@ -25,12 +24,10 @@ type AuthUser = {
 type RegisterUserResponse = ApiV1Response<'success', { data: AuthUser }> | ApiV1Response<'error'>;
 
 type RegisterUserPayload = {
+    gender: 'f' | 'm' | 'o';
     email: string;
     username: string;
     password: string;
-    captcha: string;
-    languageCode?: LanguageCode;
-    isMerchant: boolean;
 };
 
 type RegisterUserRequest = ApiV1Request<RegisterUserPayload>;
