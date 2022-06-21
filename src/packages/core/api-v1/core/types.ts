@@ -45,9 +45,12 @@ export type ApiV1ResponseBodyBase = {
     generalMessages: ApiV1Message[];
 };
 
-export type ApiV1ResponseType = 'success' | 'error';
+export enum ApiV1ResponseTypes {
+    SUCCESS = 'success',
+    ERROR = 'error',
+}
 
-export type ApiV1Response<T extends ApiV1ResponseType, Body extends object = {}> = { type: T } & Response<
+export type ApiV1Response<T extends ApiV1ResponseTypes, Body extends object = {}> = { type: T } & Response<
     Body & ApiV1ResponseBodyBase
 >;
 
