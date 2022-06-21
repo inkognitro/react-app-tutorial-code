@@ -47,6 +47,7 @@ function createRegistrationFormState(): RegistrationFormState {
 type RegistrationFormProps = {
     data: RegistrationFormState;
     onChangeData: (data: RegistrationFormState) => void;
+    onSubmit: () => void;
 };
 
 const RegistrationForm: FC<RegistrationFormProps> = (props) => {
@@ -68,7 +69,7 @@ const RegistrationForm: FC<RegistrationFormProps> = (props) => {
         />
     );
     return (
-        <Form>
+        <Form onSubmit={props.onSubmit}>
             <SingleSelection
                 data={props.data.genderSelection}
                 onChangeData={(data) => props.onChangeData({ ...props.data, genderSelection: data })}
@@ -171,7 +172,7 @@ export const RegisterPage: FC = () => {
             }
             currentUserRepo.setCurrentUser({
                 type: 'authenticated',
-                apiKey: rr.response.body.data.accessToken,
+                apiKey: rr.response.body.data.apiKey,
                 data: {
                     id: rr.response.body.data.user.id,
                     username: rr.response.body.data.user.username,
@@ -185,7 +186,11 @@ export const RegisterPage: FC = () => {
             <Typography component="h1" variant="h5">
                 {t('pages.registerPage.title')}
             </Typography>
-            <RegistrationForm data={registrationForm} onChangeData={(data) => setRegistrationForm(data)} />
+            <RegistrationForm
+                data={registrationForm}
+                onChangeData={(data) => setRegistrationForm(data)}
+                onSubmit={() => submitForm()}
+            />
             <Button
                 margin="dense"
                 variant="outlined"

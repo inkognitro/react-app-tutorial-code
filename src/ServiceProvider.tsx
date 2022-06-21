@@ -32,7 +32,7 @@ import {
 
 function createScopedApiV1RequestHandler(currentUserStateRef: MutableRefObject<AuthUser>): ScopedApiV1RequestHandler {
     const httpRequestHandler = new AxiosRequestHandler();
-    const apiV1BaseUrl = 'http://example.com/api/v1';
+    const apiV1BaseUrl = 'http://localhost:8080/api/v1';
     const httpApiV1RequestHandler = new HttpApiV1RequestHandler(
         httpRequestHandler,
         () => {
