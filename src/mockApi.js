@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const uuid = require('uuid');
 
 const port = 9000;
 const app = express();
@@ -58,7 +59,7 @@ app.post('/api/v1/auth/register', function (req, res) {
     const success = fieldMessages.length === 0;
 
     if (!success) {
-        generalMessages.push(createErrorMessage('general-message-id-02', 'api.v1.formErrors'));
+        generalMessages.push(createErrorMessage(uuid.v4(), 'api.v1.formErrors'));
         res.status(400);
         res.header('Content-Type', 'application/json');
         res.write(JSON.stringify({
@@ -70,7 +71,7 @@ app.post('/api/v1/auth/register', function (req, res) {
         return;
     }
 
-    generalMessages.push(createErrorMessage('general-message-id-01', 'api.v1.userWasCreated'));
+    generalMessages.push(createErrorMessage(uuid.v4(), 'api.v1.userWasCreated'));
     res.status(201);
     res.header('Content-Type', 'application/json');
     res.write(JSON.stringify({
