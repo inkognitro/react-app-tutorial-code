@@ -3,7 +3,7 @@ import { Entry } from '@packages/core/collection';
 
 export type Message = {
     id: string;
-    severity: 'info' | 'success' | 'error';
+    severity: 'info' | 'success' | 'warning' | 'error';
     translation: Translation;
 };
 

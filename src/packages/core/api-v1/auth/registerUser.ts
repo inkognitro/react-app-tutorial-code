@@ -8,6 +8,7 @@ import {
     ApiV1EndpointTransformer,
     ApiV1EndpointId,
     ApiV1Request,
+    ApiV1ResponseTypes,
 } from '../core';
 import { RequestResponse, Response as HttpResponse } from '../../http';
 
@@ -21,7 +22,9 @@ type AuthUser = {
     };
 };
 
-type RegisterUserResponse = ApiV1Response<'success', { data: AuthUser }> | ApiV1Response<'error'>;
+type RegisterUserResponse =
+    | ApiV1Response<ApiV1ResponseTypes.SUCCESS, { data: AuthUser }>
+    | ApiV1Response<ApiV1ResponseTypes.ERROR>;
 
 type RegisterUserPayload = {
     gender: 'f' | 'm' | 'o';
