@@ -1,10 +1,14 @@
 {
   "api": {
       "v1": {
+          "formErrors": "Ihre Formulardaten sind fehlerhaft!",
           "invalidValue": "Ungültiger Wert"
       }
   },
   "core": {
+      "util": {
+          "connectionToServerFailed": "Verbindung zum Server konnte nicht hergestellt werden."
+      },
       "currentUser": {
           "guestDisplayName": "Gast"
       },

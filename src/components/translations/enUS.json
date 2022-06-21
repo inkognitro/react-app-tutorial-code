@@ -1,10 +1,14 @@
 {
   "api": {
       "v1": {
+          "formErrors": "You have some errors in your form!",
           "invalidValue": "Invalid value"
       }
   },
   "core": {
+      "util": {
+          "connectionToServerFailed": "Connection to server failed."
+      },
       "currentUser": {
           "guestDisplayName": "Guest"
       },

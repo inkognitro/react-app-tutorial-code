@@ -28,6 +28,8 @@ import {
     HttpApiV1RequestHandler,
     ScopedApiV1RequestHandler,
     ScopedApiV1RequestHandlerProvider,
+    ApiV1ToasterMiddleware,
+    ApiV1ToasterMiddlewareProvider,
 } from '@packages/core/api-v1/core';
 
 function createScopedApiV1RequestHandler(currentUserStateRef: MutableRefObject<AuthUser>): ScopedApiV1RequestHandler {
@@ -68,6 +70,7 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
         companyName: 'ACME',
     });
     const toasterRef = useRef(new SubscribableToaster());
+    const apiV1ToasterMiddlewareRef = useRef(new ApiV1ToasterMiddleware(toasterRef.current, translatorRef.current));
     const apiV1RequestHandlerRef = useRef(createScopedApiV1RequestHandler(currentUserStateRef));
     return (
         <MuiThemeProvider theme={theme}>
@@ -76,20 +79,22 @@ export const ServiceProvider: FC<PropsWithChildren<{}>> = (props) => {
                     <ConfigProvider value={configRef.current}>
                         <I18nProvider value={i18nState}>
                             <ScopedApiV1RequestHandlerProvider value={apiV1RequestHandlerRef.current}>
-                                <ToasterProvider value={toasterRef.current}>
-                                    <SubscribableToasterProvider value={toasterRef.current}>
-                                        <I18nManagerProvider value={i18nManagerRef.current}>
-                                            <TranslatorProvider value={translatorRef.current}>
-                                                <CurrentUserRepositoryProvider
-                                                    value={browserCurrentUserRepositoryRef.current}>
-                                                    <CurrentUserProvider value={currentUserState}>
-                                                        {props.children}
-                                                    </CurrentUserProvider>
-                                                </CurrentUserRepositoryProvider>
-                                            </TranslatorProvider>
-                                        </I18nManagerProvider>
-                                    </SubscribableToasterProvider>
-                                </ToasterProvider>
+                                <ApiV1ToasterMiddlewareProvider value={apiV1ToasterMiddlewareRef.current}>
+                                    <ToasterProvider value={toasterRef.current}>
+                                        <SubscribableToasterProvider value={toasterRef.current}>
+                                            <I18nManagerProvider value={i18nManagerRef.current}>
+                                                <TranslatorProvider value={translatorRef.current}>
+                                                    <CurrentUserRepositoryProvider
+                                                        value={browserCurrentUserRepositoryRef.current}>
+                                                        <CurrentUserProvider value={currentUserState}>
+                                                            {props.children}
+                                                        </CurrentUserProvider>
+                                                    </CurrentUserRepositoryProvider>
+                                                </TranslatorProvider>
+                                            </I18nManagerProvider>
+                                        </SubscribableToasterProvider>
+                                    </ToasterProvider>
+                                </ApiV1ToasterMiddlewareProvider>
                             </ScopedApiV1RequestHandlerProvider>
                         </I18nProvider>
                     </ConfigProvider>
