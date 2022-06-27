@@ -35,7 +35,7 @@ export class ScopedApiV1RequestHandler implements ApiV1RequestHandler {
         const that = this;
         return new Promise((resolve) => {
             that.runningRequestIds.push(settings.request.id);
-            that.middlewares.map((m) => {
+            that.middlewares.forEach((m) => {
                 if (m.onRequest) {
                     m.onRequest(settings.request);
                 }
@@ -44,7 +44,7 @@ export class ScopedApiV1RequestHandler implements ApiV1RequestHandler {
                 that.runningRequestIds = that.runningRequestIds.filter(
                     (requestId) => settings.request.id !== requestId
                 );
-                that.middlewares.map((m) => {
+                that.middlewares.forEach((m) => {
                     if (m.onRequestResponse) {
                         m.onRequestResponse(rr);
                     }

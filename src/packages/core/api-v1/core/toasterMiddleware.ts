@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
-import { ApiV1Message, ApiV1RequestResponse } from '@packages/core/api-v1/core/types';
 import { Toaster } from '@packages/core/toaster';
 import { Translator } from '@packages/core/i18n';
-import { ApiV1RequestHandlerMiddleware } from './requestHandler';
+import { ApiV1RequestHandlerMiddleware } from './scopedRequestHandler';
+import { ApiV1Message, ApiV1RequestResponse } from './types';
 
 export class ApiV1ToasterMiddleware implements ApiV1RequestHandlerMiddleware {
     private readonly toaster: Toaster;
