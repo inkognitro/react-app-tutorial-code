@@ -1,6 +1,7 @@
 {
   "api": {
       "v1": {
+          "formErrors": "You have some errors in your form!",
           "invalidValue": "Invalid value"
       }
   },

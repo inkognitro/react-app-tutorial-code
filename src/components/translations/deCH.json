@@ -1,6 +1,7 @@
 {
   "api": {
       "v1": {
+          "formErrors": "Ihre Formulardaten sind fehlerhaft!",
           "invalidValue": "Ungültiger Wert"
       }
   },
